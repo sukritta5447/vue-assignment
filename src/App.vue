@@ -1,14 +1,14 @@
 <template>
   <nav>
-    <RouterLink to="/">🏠 Courses </RouterLink>
-    <!-- TODO: สร้าง <RouterLink /> สำหรับหน้า Summary -->
+    <RouterLink to="/">Course</RouterLink>
+    <RouterLink to="/summary">Summary</RouterLink>
   </nav>
   <main>
     <RouterView />
   </main>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 </script>
 
@@ -17,11 +17,13 @@ nav {
   margin: 20px;
   text-align: center;
 }
+
 a {
   margin: 0 8px;
   color: #42b883;
   text-decoration: none;
 }
+
 a:hover {
   text-decoration: underline;
 }

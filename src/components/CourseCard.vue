@@ -1,46 +1,59 @@
 <template>
-  <div class="course-list">
-    <div class="course-card">
-      <h3>ชื่อคอร์ส: ...</h3>
-      <p>ราคา: ... บาท</p>
-      <button>เพิ่มในรายการโปรด</button>
+  <article class="course-card">
+    <img :src="course.image" :alt="course.title" />
+    <div class="course-content">
+      <h3>{{ course.title }}</h3>
+      <p class="price">ราคา {{ course.price.toFixed(2) }} บาท</p>
+      <button :disabled="!username.trim()" @click="addToFavorites">
+        เพิ่มในรายการโปรด
+      </button>
     </div>
-  </div>
+  </article>
 </template>
 
-<script setup>
-// TODO: import { useFavoriteStore } แล้วเขียนฟังก์ชันเพิ่มคอร์สลง store
-// TODO: defineProps({ course: Object })
+<script setup lang="ts">
+import { storeToRefs } from "pinia";
+import { useFavoriteStore, type Course } from "../stores/favorite";
+
+const props = defineProps<{ course: Course }>();
+const favoriteStore = useFavoriteStore();
+const { username } = storeToRefs(favoriteStore);
+
+const addToFavorites = () => {
+  favoriteStore.addFavorite(props.course);
+};
 </script>
 
 <style scoped>
-.course-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 600px;
-  margin: auto;
-  padding: 16px;
-}
-
 .course-card {
   display: flex;
-  justify-content: space-between;
+  gap: 16px;
   align-items: center;
   border: 1px solid #ddd;
   border-radius: 8px;
   background: #fafafa;
   padding: 12px 16px;
+  text-align: left;
+}
+
+img {
+  width: 90px;
+  height: 90px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.course-content {
+  flex: 1;
 }
 
 h3 {
-  margin: 0;
+  margin: 0 0 8px;
   font-size: 16px;
-  font-weight: 600;
 }
 
-p {
-  margin: 0;
+.price {
+  margin: 0 0 12px;
   color: #555;
 }
 
@@ -53,7 +66,8 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  background-color: #2c9c6d;
+button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
 }
 </style>
